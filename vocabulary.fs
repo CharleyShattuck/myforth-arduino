@@ -81,9 +81,9 @@ mod      \ mod or remainder
 \ radix (base) and variables
 variable ( - adr)   \ reserve a word in RAM
 cvariable ( - adr)  \ reserve a byte in RAM
-base  variable # ;  \ an example of a variable
 hex                 \ change radix to hexadecimal
 decimal             \ change radix to decimal
+: base  variable # ;  \ an example of a variable
 
 \ numeric display (serial terminal)
 u.        \ display unsigned number
