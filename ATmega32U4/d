@@ -1,2 +1,2 @@
 set -x
-avrdude -p m328p -c avrisp -P /dev/ttyUSB1 -b 57600 -F -U flash:w:chip.bin
+avrdude -p atmega32u4 -c avr109 -P /dev/ttyACM0 -b 57600 -F -U flash:w:chip.bin

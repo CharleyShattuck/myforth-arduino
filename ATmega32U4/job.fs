@@ -106,19 +106,20 @@ include ../primitives.fs
 include ../math.fs
 
 \ * * * take serial code out of standalone, put it here
-include ../standalone.fs
+\ include ../standalone.fs
 include ./main.fs  \ application code, ends with go
 
 \ * * * what's actually required for this chip? * * *
 :m init-serial
-   DDRD Y ldi,  2 T ldi,  T sty,  \ TX0 is output
-   UCSR0A Y ldi,  0 Y' ldi,  \ 8N1
-   $20 T ldi,  T sty+,  \ ready to transmit or receive
-   $18 T ldi,  T sty+,
-   6 T ldi,  T sty+,
-   UBRR0L Y ldi,  0 Y' ldi,  \ 9600 baud
-   103 T ldi,  T sty+,
-   0 T ldi,  T sty+,  m;
+\   DDRD Y ldi,  2 T ldi,  T sty,  \ TX0 is output
+\   UCSR0A Y ldi,  0 Y' ldi,  \ 8N1
+\   $20 T ldi,  T sty+,  \ ready to transmit or receive
+\   $18 T ldi,  T sty+,
+\   6 T ldi,  T sty+,
+\   UBRR0L Y ldi,  0 Y' ldi,  \ 9600 baud
+\   103 T ldi,  T sty+,
+\   0 T ldi,  T sty+,
+    m;
 
 \ Uncomment if you haven't already defined this word,
 \ in timer.fs for example.
@@ -127,10 +128,12 @@ include ./main.fs  \ application code, ends with go
 target
 \ some macros are made subroutines just for interactive testing
 include ../interactive.fs
+
 \ Here you decide whether to quit or go, meaning debug or run
-: cold  entry cli, init-serial 10 # base ! init-interrupt abort ;
-\ : cold  entry cli, init-serial init-stacks 10 # base ! init-interrupt go ;
-here [ dup ] dict org #p! org headers  \ tack headers on end
+\ : cold  entry cli, init-serial 10 # base ! init-interrupt abort ;
+: cold  entry cli, init-serial init-stacks  ( 10 # base ! ) init-interrupt go ;
+.s cr
+\ here [ dup ] dict org #p! org headers  \ tack headers on end
 
 host : .stack  depth if  >red  then  .s >black cr ;
 report
