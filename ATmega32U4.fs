@@ -185,7 +185,7 @@ create arduino-pins
     6 c, PORTD c,
     7 c, PORTC c,
 
-: PIN ( i - bit adr)  2* arduino-pins + dup c@ swap 1+ c@ ;
-: DDR ( i - bit adr)  PIN 1+ ;
-: PORT ( i - bit adr)  PIN 2 + ;
+: PORT ( i - bit adr)  2* arduino-pins + dup c@ swap 1+ c@ ;
+: DDR ( i - bit adr)  PORT 1 - ;
+: PIN ( i - bit adr)  PORT 2 - ;
 

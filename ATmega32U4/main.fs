@@ -4,8 +4,8 @@
 \ It should have a main loop called "go". 
 
 : ms ( n)  for 4000 # for next next ;
-: go  7 DDRC sbi,   \ pin 13 is an output
-   begin  7 PORTC sbi,  500 # ms
-          7 PORTC cbi,  500 # ms
+: go   13 output,
+   begin  13 high,  500 # ms
+          13 low,  500 # ms
    again
 
