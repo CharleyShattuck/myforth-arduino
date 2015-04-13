@@ -169,7 +169,23 @@ $f2 constant UEBCLX
 $f3 constant UEBCHX
 $f4 constant UEINT
 
-: PORT ( n - bit port)   dup 8 < if PORTD exit then  -8 + PORTB ;
-: DDR ( n - bit port)   dup 8 < if DDRD exit then  -8 + DDRB ;
-: PIN ( n - bit port)   dup 8 < if PIND exit then  -8 + PINB ;
-   
+create arduino-pins
+    2 c, PORTD c,
+    3 c, PORTD c,
+    1 c, PORTD c,
+    0 c, PORTD c,
+    4 c, PORTD c,
+    6 c, PORTC c,
+    7 c, PORTD c,
+    6 c, PORTE c,
+    4 c, PORTB c,
+    5 c, PORTB c,
+    6 c, PORTB c,
+    7 c, PORTB c,
+    6 c, PORTD c,
+    7 c, PORTC c,
+
+: PIN ( i - bit adr)  2* arduino-pins + dup c@ swap 1+ c@ ;
+: DDR ( i - bit adr)  PIN 1+ ;
+: PORT ( i - bit adr)  PIN 2 + ;
+
