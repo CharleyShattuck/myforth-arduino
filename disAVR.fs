@@ -132,7 +132,7 @@ create 'regs  char N c, char T c, char X c, char Y c, char Z c,
       $939e exact if  ."  (dup"  then  cr exit  then
    $9508 inst @ = if  ." ret, " >black ." ;" cr exit  then
    $940e inst @ = if  ." call," >yellow .long cr exit  then
-   $940c inst @ = if  ." jump," >yellow .long cr exit  then
+   $940c inst @ = if  ." jmp," >yellow .long cr exit  then
    $9400 $fe0f match if  .Rd ." com,"
       $9580 exact if  ."  (invert"  then  cr exit  then
    $9403 $fe0f match if  .Rd ." inc,"  cr exit  then
