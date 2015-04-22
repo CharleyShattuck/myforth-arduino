@@ -30,9 +30,9 @@
 : +col3  5 output, 5 low, ;
 : -col3  5 input, ;
 
-\ cover up a wiring mistake, bits 4 and 5 are swapped
-: read ( - b)  0 #  PINC T in,  $3f # xor
-    dup $0f # and swap $30 # and dup 2* swap 2/ or $30 # and or ;
+\ \ cover up a wiring mistake, bits 4 and 5 are swapped
+: read ( - b)  0 #  PINC T in,  $3f # xor ;
+\    dup $0f # and swap $30 # and dup 2* swap 2/ or $30 # and or ;
 
 \ it seems that a delay is required after changing columns
 \ before reading the next one, to avoid spurious characters
@@ -58,6 +58,6 @@
 \ : show  hex  b0 c@ .  b1 c@ .  b2 c@ .  b3 c@ .  cr ;
 
 : go  init
-    begin scan send again
-\    begin scan show again
+   begin scan send again
+\   begin scan show again
 
