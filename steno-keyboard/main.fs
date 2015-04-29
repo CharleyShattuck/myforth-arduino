@@ -47,7 +47,7 @@
 
 : ms ( n)  for 4000 # for next next ;
 : zero  b0 a! 0 # dup c!+ dup c!+ dup c!+ c!+ ;
-: scan ( - flag)  zero 0 # begin drop look until  5 # ms
+: scan  zero 0 # begin drop look until  5 # ms
     begin drop look while repeat drop ;
 
 : send
