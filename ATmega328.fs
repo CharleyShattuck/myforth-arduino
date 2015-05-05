@@ -25,6 +25,7 @@ $26 constant TCNT0
 $27 constant OCR0A
 $28 constant OCR0B
 
+$34 constant MCUSR
 $35 constant MCUCR
 $3f constant SREG
 $3e constant SPH
@@ -33,6 +34,7 @@ $3d constant SPL
 \ ----- "High" Special Function Registers ----- /
 \ can't be addressed with IN or OUT
 
+$60 constant WDTCSR
 $6e constant TIMSK0
 $6f constant TIMSK1
 $70 constant TIMSK2

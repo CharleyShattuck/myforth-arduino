@@ -166,3 +166,6 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : set? ( bit)  PIN sbic, m;
 : clr? ( bit)  PIN sbis, m;
 
+\ Watchdog reset
+: wdr,  $95a8 ,-t ;
+
