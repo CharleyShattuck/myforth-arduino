@@ -99,11 +99,27 @@ create 'regs  char N c, char T c, char X c, char Y c, char Z c,
       $2b86 exact if  ."  (or"  then  cr exit  then
    .bad ;
 
+: (#) ( op - n)  dup $0f and swap 4 rshift $f0 and or ;
+
 : .x3 .bad ;
 : .x4 .bad ;
 : .x5 .bad ;
-: .x6 .bad ;
-: .x7 .bad ;
+\ : .x6 .bad ;
+: .x6
+   $6000 $f000 match if  inst @ (#) hex.
+      inst @ 4 rshift $0f and 16 + .reg ." ori,"
+      $6080 $f0f0 match if  >black ."  (# " 
+      inst @ (#) over 2 + @-t (#) 8 lshift or dec. then
+      cr exit  then
+   .bad ;
+\ : .x7 .bad ;
+: .x7
+   $7000 $f000 match if  inst @ (#) hex.
+      inst @ 4 rshift $0f and 16 + .reg ." andi,"
+      $7080 $f0f0 match if  >black ."  (# " 
+      inst @ (#) over 2 + @-t (#) 8 lshift or dec. then
+      cr exit  then
+   .bad ;
 
 : .x8
    $8000 $fe0f match if  .Rd ." ldz," cr exit  then
@@ -157,6 +173,7 @@ create 'regs  char N c, char T c, char X c, char Y c, char Z c,
    $9478 inst @ = if  ." sei,"  cr exit  then
    $95c8 inst @ = if  ." lpm,"  cr exit  then
    $9518 inst @ = if  ." reti," cr exit  then
+   $95a8 inst @ = if  ." wdr,"  cr exit  then
    .bad ;
 
 : .xa .bad ;
@@ -176,8 +193,6 @@ create 'regs  char N c, char T c, char X c, char Y c, char Z c,
 : .xd  inst @ $0fff and dup $0800 and if  $fffff000 or then
    dup .  ." rcall, "  >black over 2/ + 1 +
    base @ >r hex ( .) .label  r> base ! cr ;
-
-: (#) ( op - n)  dup $0f and swap 4 rshift $f0 and or ;
 
 : .xe
    $e000 $f000 match if  inst @ (#) hex.

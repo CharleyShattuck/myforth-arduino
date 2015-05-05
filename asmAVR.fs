@@ -107,8 +107,13 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : cpc, ( src dest) $0400 RdRr  m;
 : com, ( reg) 0 swap $9400 RdRr  m; 
 
-: ldi, ( n reg) 4 lshift $f0 and $e000 or
-   swap dup $0f and swap 4 lshift $f00 and or or ,-t  m;
+\ : ldi, ( n reg) 4 lshift $f0 and $e000 or
+\    swap dup $0f and swap 4 lshift $f00 and or or ,-t  m;
+: imm ( n reg opcode)  >r 4 lshift $f0 and
+   swap dup $0f and swap 4 lshift $f00 and or or r> or ,-t  m;
+: ldi, ( n reg)  $e000 imm m;
+: ori, ( n reg)  $6000 imm m;
+: andi, ( n reg)  $7000 imm m;
 
 : in/out ( port opcode reg)  4 lshift $1f0 and or
    swap dup $0f and swap 5 lshift $600 and or or ,-t  m;
