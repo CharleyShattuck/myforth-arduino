@@ -124,9 +124,9 @@ variable ramp  $100 ramp !
 :m |c!  T Y movw,  drop  T sty+,  drop  m;  \ 6
 
 \ literal
-:m # ( n)  ?dup  [ dup $ff and ] T ldi,  \ 2 or 4
+:m #, ( n)  ?dup  [ dup $ff and ] T ldi,  \ 2 or 4
    [ 8 rshift $ff and ] T' ldi,  m;
-:m ~# ( n)  host invert  target #  m;  \ 2 or 4
+:m ~#, ( n)  host invert  target #  m;  \ 2 or 4
 
 \ counted loop, be careful about using the Z register inside!
 \ 10 for counts from 10 down to 1 in Z (R), but i shows the index

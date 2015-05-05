@@ -285,8 +285,8 @@ c!+	../miscAVR.fs	+118
 |!	../miscAVR.fs	+122
 |c@	../miscAVR.fs	+123
 |c!	../miscAVR.fs	+124
-#	../miscAVR.fs	+127
-~#	../miscAVR.fs	+129
+#,	../miscAVR.fs	+127
+~#,	../miscAVR.fs	+129
 for	../miscAVR.fs	+135
 next	../miscAVR.fs	+137
 r@	../miscAVR.fs	+139

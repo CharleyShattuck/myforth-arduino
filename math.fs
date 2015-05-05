@@ -32,15 +32,15 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 : um/mod
    4 ldx+,  5 ldx+,  2 ldx+,  3 ldx+,
    32/16=16,16  5 -stx,  4 -stx,  2 T mov,  3 T' mov,  ;
-: u/mod ( u1 u2 - rem quo)  push 0 # pop um/mod ;
+: u/mod ( u1 u2 - rem quo)  push 0 #, pop um/mod ;
 
 : abs ( n - n')  -if  negate then ;
 : ?negate ( u n - n')  -if  drop negate ; then  drop ;
-: dnegate ( d1 - d2)  swap invert swap invert 1 # 0 #  \ fall through
+: dnegate ( d1 - d2)  swap invert swap invert 1 #, 0 #,  \ fall through
 : d+ ( d1 d2 - d3)  push swap push + pop pop +' ;
 : dabs ( d - +d)  -if  dnegate then  ;
 : s>d ( n - d)  dup  \ fall through into 0<
-: 0< ( n1 - flag)  -if  drop -1 # ; then  drop 0 # ;
+: 0< ( n1 - flag)  -if  drop -1 #, ; then  drop 0 #, ;
 
 : sm/rem ( d n - r q)
    over push over over xor push \ save signs
@@ -66,7 +66,7 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
    3 3 add,  4 4 adc,  5 5 adc,
    3 3 add,  4 4 adc,  5 5 adc,
    4 T mov,  5 T' mov,  ;
-: +1  $4000 # ;
+: +1  $4000 #, ;
 : /.  +1 swap */ ;
-: >f  10000 # /. ;
+: >f  10000 #, /. ;
 
