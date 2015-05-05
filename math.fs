@@ -33,6 +33,8 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
    4 ldx+,  5 ldx+,  2 ldx+,  3 ldx+,
    32/16=16,16  5 -stx,  4 -stx,  2 T mov,  3 T' mov,  ;
 : u/mod ( u1 u2 - rem quo)  push 0 #, pop um/mod ;
+: ud/mod ( ud u - u-rem ud-quo)  push 0 #, r@ um/mod
+     pop swap push um/mod pop ;
 
 : abs ( n - n')  -if  negate then ;
 : ?negate ( u n - n')  -if  drop negate ; then  drop ;
