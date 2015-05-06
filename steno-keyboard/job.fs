@@ -52,6 +52,7 @@ $08ff constant r0
 $06ff constant s0
 nowarn \ warnings off
 s0 1 + constant tib  \ terminal input buffer
+tib 32 + constant pad
 warn \ warnings on
 
 include ../ATmega328.fs  \ Special Function Registers
@@ -104,6 +105,7 @@ target  \ $68 org
 include ../primitives.fs
 include ../math.fs
 include ../standalone.fs
+include ../numbers.fs
 include ./main.fs  \ application code, ends with go
 
 :m init-serial
