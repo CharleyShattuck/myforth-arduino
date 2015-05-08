@@ -69,9 +69,9 @@ here constant dict  \ patch location of dictionary later
 -: query  0 #, tib #, !   \ fall through 
 -: back
     key dup 8 #, = if
-        drop tib #, c@ if
-            1 #- tib #, c!  dup emit space dup emit
-        then  drop back ; 
+        drop tib #, apush c@ if
+            1 #- tib #, c!  dup emit space dup emit dup
+        then  apop 2drop back ; 
     then  drop BL #, max echo BL #, xor if  BL #, xor tib! back ; then
     drop  apush tib #, c@ if  drop apop ; then  drop apop ok query ;
 : abort  ( *) resolve cr init-stacks
