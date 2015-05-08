@@ -26,7 +26,7 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 -: ok  last c@ BL #, = if  drop ; then  drop
    [ char o ] #, emit  [ char k ] #, emit cr ;
--: tib! ( c)  apush  tib #, dup c@ 1 #+ over c!  dup c@ + c!  apop ;
+-: tib! ( c)  tib #, dup c@ 1 #+ over c!  dup c@ + c! ;
 -: huh?  [ char ? ] #, emit forward ( *)
 -: ?stack  depth -if  huh? ; then  drop ;
 
@@ -66,14 +66,14 @@ here constant dict  \ patch location of dictionary later
    tib #, a! c@+ 1 #- c@+ drop -number? push negate pop ;
 -: interpret  apush  dictionary find if  apop execute ; then
    drop number? if  drop apop ; then  huh?
--: query  0 #, tib #, !   \ fall through 
+-: query  apush 0 #, tib #, !   \ fall through 
 -: back
     key dup 8 #, = if
-        drop tib #, apush c@ if
+        drop tib #, c@ if
             1 #- tib #, c!  dup emit space dup emit dup
-        then  apop 2drop back ; 
+        then  2drop back ; 
     then  drop BL #, max echo BL #, xor if  BL #, xor tib! back ; then
-    drop  apush tib #, c@ if  drop apop ; then  drop apop ok query ;
+    drop  tib #, c@ if  drop apop ; then  drop apop ok query ;
 : abort  ( *) resolve cr init-stacks
 : quit  query interpret ?stack ok quit ;
 
