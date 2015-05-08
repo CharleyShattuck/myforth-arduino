@@ -1,4 +1,4 @@
-\ itserial.fs
+\ serial.fs
 
 0 [if]
 Copyright (C) 2015 by Charles Shattuck.
@@ -24,7 +24,7 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 : last ( - a)  cvariable #, ;
 : 2dup ( n1 n2 - n1 n2 n1 n2)  over over ;
 : min  2dup swap
--: clip  - -if  push swap pop then is  \ falls through into 2drop
+-: clip  - -if  push swap pop then  \ falls through into 2drop
 : 2drop ( n1 n2)  drop drop ;
 : 0max  0 #,  \ falls through into max
 : max  2dup clip ;

@@ -67,9 +67,13 @@ here constant dict  \ patch location of dictionary later
 -: interpret  apush  dictionary find if  apop execute ; then
    drop number? if  drop apop ; then  huh?
 -: query  0 #, tib #, !   \ fall through 
--: back  key dup 8 #, = if  2drop cr query ; then
-   drop BL #, max echo BL #, xor if  BL #, xor tib! back ; then
-   drop  apush tib #, c@ if  drop apop ; then  drop apop ok query ;
+-: back
+    key dup 8 #, = if
+        drop tib #, c@ if
+            1 #- tib #, c!  dup emit space dup emit
+        then  drop back ; 
+    then  drop BL #, max echo BL #, xor if  BL #, xor tib! back ; then
+    drop  apush tib #, c@ if  drop apop ; then  drop apop ok query ;
 : abort  ( *) resolve cr init-stacks
 : quit  query interpret ?stack ok quit ;
 
