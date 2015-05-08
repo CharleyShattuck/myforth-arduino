@@ -21,41 +21,9 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 [then]
 
-: last  cvariable #, ;
-: base  variable #, ;
-: hex  $10 #, base ! ;
-: decimal  $0a #, base ! ;
 : =  -  \ falls through into 0=
 : 0=  if -1 #, or then invert ;
-: 2drop  drop drop ;
-: 2dup  over over ;
-: min  2dup swap
--: clip  - -if  push swap pop then  drop drop ;
-: 0max  0 #,  \ falls through into max
-: max  2dup clip ;
--: echo  dup  \ falls through into emit
-: emit ( c)
-   apush  0 #,
-   begin  drop UCSR0A #, c@  $20 #, and until
-   drop UDR0 #, c!  apop ;
-: key ( - c)
-   apush  0 #,
-   begin  drop UCSR0A #, c@ $80 #, and until
-   drop UDR0 #, c@  dup last c! apop ;
-: type ( adr len)  0max if  apush
-      swap a! for  c@+ emit next  apop ; 
-   then  2drop ;
-: space  32 #, emit ;
-: cr  13 #, emit 10 #, emit ;
--: (digit)  -10 #, + -if  -39 #,  + then  97 #, + ;
--: digit  $0f #, and (digit) emit ;
-: 16/  2/ 2/ 2/ 2/ ;
--: (h.) ( n)  dup 16/ 16/ 16/ digit
-   dup 16/ 16/ digit  dup 16/ digit  digit ;
-: h. ( n)  (h.) space ;
-: h.2 ( n)  dup 16/ digit digit space ;
--: sp@ ( - a)  dup  X T movw,  ;
-: depth ( - n)  s0 #, sp@ - 2/ 2 #, - ;
+
 -: ok  last c@ BL #, = if  drop ; then  drop
    [ char o ] #, emit  [ char k ] #, emit cr ;
 -: tib! ( c)  apush  tib #, dup c@ 1 #+ over c!  dup c@ + c!  apop ;
@@ -104,21 +72,4 @@ here constant dict  \ patch location of dictionary later
    drop  apush tib #, c@ if  drop apop ; then  drop apop ok query ;
 : abort  ( *) resolve cr init-stacks
 : quit  query interpret ?stack ok quit ;
-
--: first ( - addr)  variable #, ;
--: sign -if  negate 45 #, emit ; then  ;
--: ?digit ( n - n)  if  dup first ! digit ; then
-   first @ if  over digit then  2drop ; 
-: (u.) ( u)  apush 0 #, first ! -1 #, swap
-   begin  base @ u/mod while repeat  drop
-   begin  digit -until  drop ( space) apop ;
-: u. ( u)  (u.) space ;
-: .f ( f)  apush  sign 10000 #, *.
-   10000 #, u/mod digit 46 #, emit 1000 #, u/mod digit
-   100 #, u/mod digit 10 #, u/mod digit digit space ;
-\ . is unsigned for hex, signed otherwise
-: . apush base @ apop $10 #, xor if  drop sign dup then  drop u. ;
-: .s  apush  [ s0 4 - ] #, a! depth dup (h.) 62 #, emit space
-   if  dup 6 #, min for  @+ .  4 Y sbiw,  next then  drop apop ;
-: ?  @ . ;
 

@@ -104,8 +104,9 @@ include ../miscAVR.fs
 target  \ $68 org
 include ../primitives.fs
 include ../math.fs
-include ../standalone.fs
+include ../serial.fs
 include ../numbers.fs
+include ../standalone.fs
 include ./main.fs  \ application code, ends with go
 
 :m init-serial

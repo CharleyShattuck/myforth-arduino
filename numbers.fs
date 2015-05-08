@@ -21,6 +21,10 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 [then]
 
+: base ( - a)  variable #, ;
+: decimal  $0a #, base ! ;
+: hex  $10 #, base ! ;
+
 : holder ( - adr)  variable #, ;
 : hold ( c)  holder @ 1 #- dup holder ! c! ;
 : sign ( n)  -if char - #, hold then drop ;
@@ -30,10 +34,11 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 : # ( ud1 - ud2)  base @ ud/mod rot 9 #, over - -if
     drop 7 #, + dup then  drop 48 #, + hold ;
-: #s ( ud - 0 0)  begin # over over or while drop repeat drop ;
+: #s ( ud - 0 0)  begin # 2dup or while drop repeat drop ;
 
-: h. ( u)  base @ push hex 0 #, <# # # # # #>
-    type space pop base ! ;
+: (h.) ( u - adr len)  base @ push hex 0 #, <# # # # # #> pop base ! ;
+: h. ( u)  (h.) type space ;
+
 : ud. ( ud)  <# #s #> type space ;
 : u. ( u)  0 #, ud. ;
 
@@ -43,4 +48,12 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 : .f ( f)  10000 #, *. dup push abs 0 #,
     <# # # # # char . #, hold # pop sign #> type space ;
+
+-: sp@ ( - a)  dup  X T movw,  ;
+: depth ( - n)  s0 #, sp@ - 2/ 2 #- ;
+
+: ?  @ . ;
+: .s  apush depth [ s0 4 - ] #, swap if
+        for dup ? 2 #- next  dup
+    then  2drop apop ;
 
