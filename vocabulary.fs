@@ -24,6 +24,7 @@ over     \ copy second on stack to top
 r@       \ copy top of return stack to top of stack
 push     \ push top of data stack to return stack
 pop      \ pop return stack onto data stack
+rot      \ rotate third item to top of stack
 apush    \ hand optimized pushes
 apop     \ and pops
 zpush
@@ -58,7 +59,7 @@ c@+      \ byte fetch and increment
 !+       \ store via and increment address register
 c!+      \ byte store and increment
 
-#        \ put a literal on the stack
+#,       \ put a literal on the stack
 ~#       \ put inverted literal on stack
 #+       \ add literal, hand optimized
 #-       \ subtract literal, hand optimized
@@ -79,8 +80,8 @@ mod      \ mod or remainder
 /.       \ fractional division
 
 \ radix (base) and variables
-variable ( - adr)   \ reserve a word in RAM
-cvariable ( - adr)  \ reserve a byte in RAM
+variable ( - adr)   \ name an address in RAM, allot word
+cvariable ( - adr)  \ name an address in RAM, allot byte
 hex                 \ change radix to hexadecimal
 decimal             \ change radix to decimal
 : base  variable # ;  \ an example of a variable
