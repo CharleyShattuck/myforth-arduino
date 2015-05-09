@@ -37,12 +37,6 @@ nowarn
 \ 22 constant N   23 constant N'   \ next on stack (temporary)
 \ $3e constant SPH  $3d constant SPL   \ return stack pointer
 
-\ variables on the target
-variable ramp  $100 ramp !
-:m variable ( - adr)  ramp @ 2 ramp +! m;
-:m cvariable ( - adr)  ramp @ 1 ramp +! m;
-\ use as  : this ( - a)  variable # ;
-
 \ ----- Target Forth Primitives ----- /
 
 :m nop  nop,  m;
@@ -165,4 +159,7 @@ variable ramp  $100 ramp !
 :m apop  Y pop,  Y' pop,  m;
 :m zpush  Z' push,  Z push,  m;
 :m zpop  Z pop,  Z' pop,  m;
+
+:m variable  :  cpuHERE #, 2 cpuALLOT  exit m;
+:m cvariable  :  cpuHERE #, 1 cpuALLOT  exit m;
 

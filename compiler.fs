@@ -51,12 +51,12 @@ variable tdp  \ Rom pointer.
 :m ALLOT   ( n - )   tdp +! m;
 :m ,   ( n - )   HERE !-t 2 ALLOT m;
 : ,-t   ( n - )   target , m;
+: report  cr ." HERE=" target HERE host u. cr ;
 
 variable trp  \ Ram pointer.
 : cpuHERE  (  - a)   trp @ ;
-: cpuORG  ( a - )  trp ! ; 8 cpuORG
+: cpuORG  ( a - )  trp ! ;  $100 cpuORG
 : cpuALLOT  ( n - )  trp +! ;
-: report  cr ." HERE=" target HERE host u. cr ;
 
 \ ----- Optimization ----- /
 variable 'edge

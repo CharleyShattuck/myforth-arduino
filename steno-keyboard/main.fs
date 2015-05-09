@@ -11,10 +11,10 @@
 \       4    W E L #
 \       5    H U G
 
-: b0  cvariable #, ;
-: b1  cvariable #, ;
-: b2  cvariable #, ;
-: b3  cvariable #, ;
+cvariable b0
+cvariable b1
+cvariable b2
+cvariable b3
 
 \ weak pullup on PORTC pins
 \ high impedence on column pins

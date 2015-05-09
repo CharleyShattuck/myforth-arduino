@@ -21,11 +21,11 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 [then]
 
-: base ( - a)  variable #, ;
+variable base
 : decimal  $0a #, base ! ;
 : hex  $10 #, base ! ;
 
-: holder ( - adr)  variable #, ;
+variable holder
 : hold ( c)  holder @ 1 #- dup holder ! c! ;
 : sign ( n)  -if char - #, hold then drop ;
 
