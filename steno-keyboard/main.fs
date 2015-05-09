@@ -47,8 +47,8 @@ cvariable b3
 
 : ms ( n)  for 4000 #, for next next ;
 : zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
-: scan  zero 0 #, begin drop look until  5 #, ms
-    begin drop look while repeat drop ;
+: scan  zero begin look until/
+    5 #, ms  begin look while/ repeat ;
 
 : send
     b0 c@ if dup emit then drop

@@ -69,6 +69,12 @@ nowarn
 :m /if ( - adr)  hide clr? ahead m;
 :m \if ( - adr)  hide set? ahead m;
 
+\ these pop the stack as in classic Forth
+:m drop  hint  T ldx+,  T' ldx+,  m;  \ 2 or 0
+:m if/ ( - adr)  0 T adiw,  drop  begin dup rel $7f and breq,  m;
+:m until/ ( adr)  hide 0 T adiw,  drop  rel $7f and breq,  m;
+:m while/ ( a - a' a)  if/ [ swap ]  m;
+
 \ stack
 :m dup  T' -stx,  T -stx,  m;  \ 2 or 0
 :m ?dup  \ removes redundant "drop dup" pairs
@@ -76,7 +82,6 @@ nowarn
    edge @-t $918d =  edge 2 + @-t $919d =  [ and if ]
       -4 allot  [ exit then ] hint dup  m;
 
-:m drop  hint  T ldx+,  T' ldx+,  m;  \ 2 or 0
 :m nip  N ldx+,  N' ldx+,  m;  \ 2
 :m |swap  nip  dup  N T movw,  m;  \ 5
 :m |over  nip  N' -stx,  N -stx,  dup  N T movw,  m;  \ 7
