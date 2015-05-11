@@ -116,12 +116,13 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : andi, ( n reg)  $7000 imm m;
 
 : in/out ( port opcode reg)  4 lshift $1f0 and or
-   swap dup $0f and swap 5 lshift $600 and or or ,-t  m;
+    swap $20 -  dup 0 $60 within 0= if  abort" port out of range" then
+    dup $0f and swap 5 lshift $600 and or or ,-t  m;
 : in, ( port reg)  $b000 swap in/out  m;
 : out, ( reg port)  swap $b800 swap in/out  m;
 
-: sbi, ( bit reg) 3 lshift or  $9a00 or ,-t  m;
-: cbi, ( bit reg) 3 lshift or  $9800 or ,-t  m;
+: sbi, ( bit reg) $20 - 3 lshift or  $9a00 or ,-t  m;
+: cbi, ( bit reg) $20 - 3 lshift or  $9800 or ,-t  m;
 
 : clc,  $9488 ,-t  m;
 : ror, ( reg) 4 lshift $01f0 and $9407 or ,-t  m;
@@ -134,8 +135,8 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : brpl, ( rel) 3 lshift $f402 or ,-t  m;
 : brmi, ( rel) 3 lshift $f002 or ,-t  m;
 
-: sbic, ( bit reg) 3 lshift or $9900 or ,-t  m;
-: sbis, ( bit reg) 3 lshift or $9b00 or ,-t  m;
+: sbic, ( bit reg) $20 - 3 lshift or $9900 or ,-t  m;
+: sbis, ( bit reg) $20 - 3 lshift or $9b00 or ,-t  m;
 : sbrc, ( bit reg) 4 lshift or $fc00 or ,-t  m;
 : sbrs, ( bit reg) 4 lshift or $fe00 or ,-t  m;
 

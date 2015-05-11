@@ -127,8 +127,8 @@ target
 \ some macros are made subroutines just for interactive testing
 include ../interactive.fs
 \ Here you decide whether to quit or go, meaning debug or run
-: cold  entry cli, init-serial 10 #, base ! init-interrupt abort ;
-\ : cold  entry cli, init-serial init-stacks 10 #, base ! init-interrupt go ;
+\ : cold  entry cli, init-serial 10 #, base ! init-interrupt abort ;
+: cold  entry cli, init-serial init-stacks 10 #, base ! init-interrupt go ;
 here [ dup ] dict org #p! org headers  \ tack headers on end
 
 host : .stack  depth if  >red  then  .s >black cr ;
