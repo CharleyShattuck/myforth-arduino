@@ -72,7 +72,7 @@ nowarn
 \ these pop the stack as in classic Forth
 :m drop  hint  T ldx+,  T' ldx+,  m;  \ 2 or 0
 :m if/ ( - adr)  0 T adiw,  drop  begin dup rel $7f and breq,  m;
-:m until/ ( adr)  hide 0 T adiw,  drop  rel $7f and breq,  m;
+:m until/ ( adr)  0 T adiw,  drop hide rel $7f and breq,  m;
 :m while/ ( a - a' a)  if/ [ swap ]  m;
 
 \ stack
