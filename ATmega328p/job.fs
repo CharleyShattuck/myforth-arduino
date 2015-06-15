@@ -1,7 +1,7 @@
 \ job.fs
 
 0 [if]
-Copyright (C) 2009 by Charles Shattuck.
+Copyright (C) 2009-2015 by Charles Shattuck.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -52,6 +52,7 @@ $08ff constant r0
 $06ff constant s0
 nowarn \ warnings off
 s0 1 + constant tib  \ terminal input buffer
+tib 32 + constant pad
 warn \ warnings on
 
 include ../ATmega328.fs  \ Special Function Registers
@@ -103,8 +104,8 @@ include ../miscAVR.fs
 target  \ $68 org
 include ../primitives.fs
 include ../math.fs
-
-\ * * * take serial code out of standalone and put it here. * * *
+include ../serial.fs
+include ../numbers.fs
 include ../standalone.fs
 include ./main.fs  \ application code, ends with go
 
@@ -126,8 +127,8 @@ target
 \ some macros are made subroutines just for interactive testing
 include ../interactive.fs
 \ Here you decide whether to quit or go, meaning debug or run
-: cold  entry cli, init-serial 10 # base ! init-interrupt abort ;
-\ : cold  entry cli, init-serial init-stacks 10 # base ! init-interrupt go ;
+: cold  entry cli, init-serial 10 #, base ! init-interrupt abort ;
+\ : cold  entry cli, init-serial init-stacks 10 #, base ! init-interrupt go ;
 here [ dup ] dict org #p! org headers  \ tack headers on end
 
 host : .stack  depth if  >red  then  .s >black cr ;

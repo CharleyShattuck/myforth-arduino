@@ -85,8 +85,8 @@ nowarn
 :m nip  N ldx+,  N' ldx+,  m;  \ 2
 :m |swap  nip  dup  N T movw,  m;  \ 5
 :m |over  nip  N' -stx,  N -stx,  dup  N T movw,  m;  \ 7
-:m push  T' push,  T push,  drop  m;  \ 2 or 4
-:m pop  ?dup  T pop,  T' pop,  m;  \ 2 or 4
+:m push  T push,  T' push,  drop  m;  \ 2 or 4
+:m pop  ?dup  T' pop,  T pop,  m;  \ 2 or 4
 
 \ binary
 :m |+  nip  N T add,  N' T' adc,  m;  \ 4

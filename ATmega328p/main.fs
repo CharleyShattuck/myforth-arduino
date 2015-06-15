@@ -1,5 +1,6 @@
 \ main.fs
+include ../strings.fs
 
-\ This is where your application goes.
-\ It should have a main loop called "go". 
+: greet  s" This is a string!" ptype cr ;
+: this  ." This was also a string!" space .s ;
 
