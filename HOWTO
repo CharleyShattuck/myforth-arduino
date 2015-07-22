@@ -8,7 +8,7 @@ The app directory also contains four script files; "c" for compile, "t" for test
 
 So far I have only run this in Linux, in a bash terminal. The scripts assume that you have installed gforth, the Arduino IDE (for AVRDude) and minicom.
 
-You should know that this is not ANSI Forth. It is more of an assembler made to resemble colorForth. Conditionals such as "if", "-if", "while", "-while", "until" and "-until" do not consume the top of the stack. Though "@", "c@", "!" and "c!" each take an address argument; "@+", "!+", "c@+" and "c!+" do not. They all use the "address" register, which is loaded by "a!" or any of those non-incrementing memory operators.
+You should know that this is not ANSI Forth. It is more of an assembler made to resemble colorForth. Conditionals such as "if", "-if", "while", "-while", "until" and "-until" do not consume the top of the stack. Though "@", "c@", "!" and "c!" each take an address argument; "@+", "!+", "c@+" and "c!+" do not. They all use the "address" register, which is loaded by "a!" or any of those non-incrementing memory operators. "if/", "while/", and "until/" have been added and pop the data stack like classic Forth would. Sometimes that's what you want.
 
 See the file "vocabulary.fs" for descriptions of all the primitives.
 
