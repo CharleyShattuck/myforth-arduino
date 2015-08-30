@@ -25,7 +25,7 @@ else
 endif
 
 " Text is yellow by default
-syntax region Default start='^.*' end='%$' contains=Comment,Colon,Node,Code,Variable,Macro,Interpret
+syntax region Default start='^.*' end='%$' contains=Comment,Colon,Node,Code,Variable,Macro
 
 " Colon body is green
 syntax region Colon start='\<:\>\s*' end='^$\|;$' contained contains=Head,Comment,Interpret
@@ -49,8 +49,8 @@ syntax match Comment '\\G.*$' contained
 syntax match Comment '\\$' contained
 
 " Yellow within brackets inside a colon definition
- " syntax match Interpret '^[^ \t].*$' contained
-" syntax region Interpret start='\<\[\>' end='\<]\>' contained contains=Comment
+" syntax match Interpret '^[^ \t].*$' contained
+" syntax region Interpret start='\<\[\>' end='\<]\>' contained
 " syntax match Interpret '\<postpone\>\s*[^ \t]\+\>' contained
 " syntax match Interpret '\<char\>\s*[^ \t]\+\>' contained
 " syntax match Interpret '\<\[char]\>\s*[^ \t]\+\>' contained
@@ -78,6 +78,12 @@ syntax match Definer '\<:\>\s*\>' contained
 syntax match Definer '\<:m\>\s*\>' contained
 syntax match Definer '\<-:\>\s*\>' contained
 
+" syntax match Brack '\<]\>' contained
+" syntax match Brack '\[' contained
+
+syntax region Interpret start='\<\[\>'hs=e+1 end='\<]\>'he=s-1 contained contains=Brack
+" syntax region Brack start='\<\[\>' end='\<]\>' contained
+
 highlight Default ctermfg=Yellow guifg=Yellow
 highlight Interpret ctermfg=Yellow guifg=Yellow
 highlight Head ctermfg=Red guifg=Red
@@ -86,6 +92,7 @@ highlight Comment ctermfg=LightGray guifg=LightGray
 highlight Colon ctermfg=Green guifg=Green
 highlight Variable ctermfg=Red guifg=Red
 highlight Definer ctermfg=Magenta guifg=Magenta
+highlight Brack ctermfg=Magenta guifg=Magenta
 
 let b:current_syntax = "forth"
 
