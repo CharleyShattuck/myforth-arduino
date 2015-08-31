@@ -25,12 +25,13 @@ else
 endif
 
 " Text is yellow by default
-syntax region Default start='^.*' end='%$' contains=Comment,Colon,Node,Code,Variable,Macro
+syntax region Default start='^.*' end='%$' contains=Comment,Colon,Code,Variable
 
 " Colon body is green
-syntax region Colon start='\<:\>\s*' end='^$\|;$' contained contains=Head,Comment,Interpret
-syntax region Colon start='\<:m\>\s*' end='^$\|;m$' contained contains=Head,Comment,Interpret
-syntax region Colon start='\<-:\>\s*' end='^$\|;$' contained contains=Head,Comment,Interpret
+syntax region Colon start='\<:\>\s*' end='^$\|;$' contained contains=Head,Comment,Interpret,Branch
+syntax region Colon start='\<:m\>\s*' end='^$\|;m$' contained contains=Head,Comment,Interpret,Branch
+syntax region Colon start='\<-:\>\s*' end='^$\|;$' contained contains=Head,Comment,Interpret,Branch
+syntax region Colon start='\<interrupt\>\s*' end='^$' contained contains=Head,Comment,Interpret,Branch,Definer
 
 " Name is red
 syntax match Head '\<:\>\s*[^ \t]\+\>' contained contains=Definer
@@ -47,13 +48,6 @@ syntax match Comment '\\\\.*$' contained
 syntax match Comment '\\s.*$' contained
 syntax match Comment '\\G.*$' contained
 syntax match Comment '\\$' contained
-
-" Yellow within brackets inside a colon definition
-" syntax match Interpret '^[^ \t].*$' contained
-" syntax region Interpret start='\<\[\>' end='\<]\>' contained
-" syntax match Interpret '\<postpone\>\s*[^ \t]\+\>' contained
-" syntax match Interpret '\<char\>\s*[^ \t]\+\>' contained
-" syntax match Interpret '\<\[char]\>\s*[^ \t]\+\>' contained
 
 " variables and similar words are red
 syntax match Variable '\s*variable\s*[^ \t]\+\>' contained contains=Definer
@@ -73,16 +67,30 @@ syntax match Definer '\<create\>\s*\>' contained
 syntax match Definer '\s*constant\>\s*\>' contained
 syntax match Definer '\s*2constant\>\s*\>' contained
 syntax match Definer '\<defer\>\s*\>' contained
-
 syntax match Definer '\<:\>\s*\>' contained
 syntax match Definer '\<:m\>\s*\>' contained
 syntax match Definer '\<-:\>\s*\>' contained
+syntax match Definer '\<interrupt\>' contained
 
-" syntax match Brack '\<]\>' contained
-" syntax match Brack '\[' contained
+" Yellow within brackets inside a colon definition
+syntax region Interpret start='\<\[\>'hs=e+1 end='\<]\>'he=s-1 contained
 
-syntax region Interpret start='\<\[\>'hs=e+1 end='\<]\>'he=s-1 contained contains=Brack
-" syntax region Brack start='\<\[\>' end='\<]\>' contained
+syntax match Branch "\<begin\>"
+syntax match Branch "\<again\>"
+syntax match Branch "\<while\>"
+syntax match Branch "\<-while\>"
+syntax match Branch "\<until\>"
+syntax match Branch "\<-until\>"
+syntax match Branch "\<repeat\>"
+syntax match Branch "\<if\>"
+syntax match Branch "\<-if\>"
+syntax match Branch "\<then\>"
+syntax match Branch "\<ahead\>"
+syntax match Branch "\<if/\>"
+syntax match Branch "\<until/\>"
+syntax match Branch "\<while/\>"
+syntax match Branch "\<for\>"
+syntax match Branch "\<next\>"
 
 highlight Default ctermfg=Yellow guifg=Yellow
 highlight Interpret ctermfg=Yellow guifg=Yellow
@@ -93,6 +101,7 @@ highlight Colon ctermfg=Green guifg=Green
 highlight Variable ctermfg=Red guifg=Red
 highlight Definer ctermfg=Magenta guifg=Magenta
 highlight Brack ctermfg=Magenta guifg=Magenta
+highlight Branch ctermfg=Cyan guifg=Green
 
 let b:current_syntax = "forth"
 
