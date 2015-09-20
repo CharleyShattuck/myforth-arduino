@@ -76,21 +76,32 @@ syntax match Definer '\<interrupt\>' contained
 syntax region Interpret start='\<\[\>'hs=e+1 end='\<]\>'he=s-1 contained
 
 syntax match Branch "\<begin\>"
+syntax match Branch "\<begin,\>"
 syntax match Branch "\<again\>"
+syntax match Branch "\<again,\>"
 syntax match Branch "\<while\>"
 syntax match Branch "\<-while\>"
 syntax match Branch "\<until\>"
+syntax match Branch "\<until,\>"
 syntax match Branch "\<-until\>"
+syntax match Branch "\<-until,\>"
+syntax match Branch "\<0until,\>"
 syntax match Branch "\<repeat\>"
 syntax match Branch "\<if\>"
+syntax match Branch "\<if,\>"
 syntax match Branch "\<-if\>"
+syntax match Branch "\<-if,\>"
+syntax match Branch "\<0if,\>"
 syntax match Branch "\<then\>"
+syntax match Branch "\<then,\>"
 syntax match Branch "\<ahead\>"
 syntax match Branch "\<if/\>"
 syntax match Branch "\<until/\>"
 syntax match Branch "\<while/\>"
 syntax match Branch "\<for\>"
+syntax match Branch "\<##for\>"
 syntax match Branch "\<next\>"
+syntax match Branch "\<next,\>"
 
 highlight Default ctermfg=Yellow guifg=Yellow
 highlight Interpret ctermfg=Yellow guifg=Yellow
