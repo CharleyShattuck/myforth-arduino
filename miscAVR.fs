@@ -57,8 +57,11 @@ nowarn
 
 \ ahead ... then  ( short relative jump)
 :m ahead ( - adr)  begin dup rel $7f and rjmp,  m;
-:m then ( adr)  ( here) begin >r dup org r@  rel $7f and
-   3 lshift over @-t $fc07 and or swap !-t  r> org  m;
+:m then ( adr)
+    dup @-t $f000 and $c000 = if  
+        begin >r org r@ rjmp, r> org host exit target then
+    begin >r dup org r@  rel $7f and
+    3 lshift over @-t $fc07 and or swap !-t  r> org  m;
 
 \ each of the following matches up with "then" for a short relative jump
 :m if ( - adr)  0 T adiw,  ( here) begin dup rel $7f and breq,  m;
