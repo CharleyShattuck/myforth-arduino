@@ -143,12 +143,26 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : until, ( a)  rel $7f and breq,  m;
 : if, ( - a)  begin, dup rel $7f and breq,  m;
 : brcs, ( rel) 3 lshift $f000 or ,-t  m;
+: brlo, ( rel)  brcs,  m;
+: brcc, ( rel) 3 lshift $f400 or ,-t  m;
+: brsh, ( rel)  brcc,  m;
 : brpl, ( rel) 3 lshift $f402 or ,-t  m;
 : -until, ( a)  rel $7f and brpl,  m;
 : -if, ( - a)  begin, dup rel $7f and brpl,  m;
 : brmi, ( rel) 3 lshift $f002 or ,-t  m;
 : then, ( a)  begin, >r dup org r@  rel $7f and
     3 lshift over @-t $fc07 and or swap !-t  r> org  m;
+
+: brvc, ( rel) 3 lshift $f403 or ,-t  m;
+: brvs, ( rel) 3 lshift $f003 or ,-t  m;
+: brge, ( rel) 3 lshift $f404 or ,-t  m;
+: brlt, ( rel) 3 lshift $f004 or ,-t  m;
+: brhc, ( rel) 3 lshift $f405 or ,-t  m;
+: brhs, ( rel) 3 lshift $f005 or ,-t  m;
+: brtc, ( rel) 3 lshift $f406 or ,-t  m;
+: brts, ( rel) 3 lshift $f006 or ,-t  m;
+: brid, ( rel) 3 lshift $f407 or ,-t  m;
+: brie, ( rel) 3 lshift $f007 or ,-t  m;
 
 : sbic, ( bit reg) io-bit  $9900 or ,-t  m;
 : sbis, ( bit reg) io-bit  $9b00 or ,-t  m;
