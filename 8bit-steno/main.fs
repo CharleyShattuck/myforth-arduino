@@ -11,8 +11,6 @@
 \       4    W E L #
 \       5    H U G
 
-\ Top of stack cached in T
-
 host
 :m # ( n)  T ldi,  m;
 :m @ ( reg)  ldy,  m;
@@ -39,13 +37,14 @@ target
     begin,  N @  $20 N andi,  until,
     UDR0 ##a!  T !  ;
 
-: cr  13 # emit  10 # emit ; 
-: space  32 # emit ;
+\ : cr  13 # emit  10 # emit ; 
+\ : space  32 # emit ;
 
-: digit ( T - T)  $0f #and  $0A #-  -if,  
-        $3A #+  ;  then,  $41 #+  ;
-: h. ( T)   T push  T ror,  T ror,  T ror,  T ror,
-    digit emit  T pop  digit emit  space  ;
+\ : digit ( T - T)  $0f #and  $0A #-  -if,  
+\         $3A #+  ;  then,  $41 #+  ;
+\ : h. ( T)   T push  T ror,  T ror,  T ror,  T ror,
+\     digit emit  T pop  digit emit  space  ;
+
 
 host
 \ registers used
@@ -58,15 +57,16 @@ host
 \ weak pullup on PORTC pins
 \ high impedence on column pins
 :m init  0 #  T DDRC out,  $ff #  T PORTC out,
-    2 input,  3 input,  4 input,  5 input, m;
+    2 input, 2 low,  3 input, 3 low,
+    4 input, 4 low,  5 input, 5 low, m;
 
-:m +col0  2 output, 2 low, m;
+:m +col0  2 output, m;
 :m -col0  2 input, m;
-:m +col1  3 output, 3 low, m;
+:m +col1  3 output, m;
 :m -col1  3 input, m;
-:m +col2  4 output, 4 low, m;
+:m +col2  4 output, m;
 :m -col2  4 input, m;
-:m +col3  5 output, 5 low, m;
+:m +col3  5 output, m;
 :m -col3  5 input, m;
 
 :m zero  b0 b0 xor,  b1 b1 xor,  b2 b2 xor,  b3 b3 xor,  m;
@@ -84,8 +84,10 @@ target
     +col1 wait read  T b2 or, -col1  T keys or,
     +col0 wait read  T b3 or, -col0  keys T or, ;
 
-: scan  zero begin, look until,
-    5 ##ms  begin, look 0until, ;
+: scan
+    begin, zero
+        begin, look until,  5 ##ms look until,
+    begin, look 0until, ;
 
 : send ( x - x)  13 high,
     b0 ? if,  b0 T mov, emit  then,
@@ -94,12 +96,12 @@ target
     b3 T mov,  b3 ? if,  $c0 #or  then,  emit 
     13 low, ;
 
-: show
-    b0 T mov, h. 
-    b1 T mov, h. 
-    b2 T mov, h. 
-    b3 T mov, h. 
-    cr ;
+\ : show
+\     b0 T mov, h. 
+\     b1 T mov, h. 
+\     b2 T mov, h. 
+\     b3 T mov, h. 
+\     cr ;
 
 : go  init
     begin, scan send again,
