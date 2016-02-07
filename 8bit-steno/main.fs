@@ -86,7 +86,7 @@ target
 
 : scan
     begin, zero
-        begin, look until,  5 ##ms look until,
+        begin, look until,  20 ##ms look until,
     begin, look 0until, ;
 
 : send ( x - x)  13 high,
