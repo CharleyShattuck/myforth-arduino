@@ -35,6 +35,8 @@ warn
 : :m postpone target : ;
 : m; postpone ; postpone host ; immediate
 
+:m words  words m;
+
 \ 0 constant start  \ Reset vector.
 \ 8192 constant target-size
 create target-image target-size allot

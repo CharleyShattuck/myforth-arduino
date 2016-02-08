@@ -72,7 +72,6 @@ include ../ATmega328.fs  \ Special Function Registers
 include ../compiler.fs
 include ../disAVR.fs
 include ../asmAVR.fs
-\ include ../miscAVR.fs
 
 :m init-stacks
    [ r0 dup 8 rshift $ff and ] T ldi,  T SPH out,
@@ -81,38 +80,9 @@ include ../asmAVR.fs
 
 \ Default interrupt vector
 0 org 0 ljmp,  \ reset vector
-0 ljmp,  \ $04
-0 ljmp,  \ $08
-0 ljmp,  \ $0c
-0 ljmp,  \ $10
-0 ljmp,  \ $14
-0 ljmp,  \ $18
-0 ljmp,  \ $1c
-0 ljmp,  \ $20
-0 ljmp,  \ $24
-0 ljmp,  \ $28
-0 ljmp,  \ $2c
-0 ljmp,  \ $30
-0 ljmp,  \ $34
-0 ljmp,  \ $38
-0 ljmp,  \ $3c
-0 ljmp,  \ $40
-0 ljmp,  \ $44
-0 ljmp,  \ $48
-0 ljmp,  \ $4c
-0 ljmp,  \ $50
-0 ljmp,  \ $54
-0 ljmp,  \ $58
-0 ljmp,  \ $5c
-0 ljmp,  \ $60
-0 ljmp,  \ $64
+\ ignore interrupts
 
-target  \ $68 org
-\ include ../primitives.fs
-\ include ../math.fs
-\ include ../serial.fs
-\ include ../numbers.fs
-\ include ../standalone.fs
+target
 include ./main.fs  \ application code, ends with go
 
 :m init-serial
