@@ -1,5 +1,7 @@
 \ timer.fs
-[ ramp @ constant 'counter  4 ramp +! ]
+\ [ ramp @ constant 'counter  4 ramp +! ]
+
+cpuHERE constant 'counter 4 cpuALLOT
 
 $12 interrupt
    cli,  N push,  1 N ldi,  T push,  X push,  X' push,
