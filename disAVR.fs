@@ -102,9 +102,20 @@ create 'regs  char N c, char T c, char X c, char Y c, char Z c,
 : (#) ( op - n)  dup $0f and swap 4 rshift $f0 and or ;
 
 : .x3 .bad ;
-: .x4 .bad ;
-: .x5 .bad ;
-\ : .x6 .bad ;
+: .x4
+   $4000 $f000 match if  inst @ (#) hex.
+      inst @ 4 rshift $0f and 16 + .reg ." sbci,"
+      $4080 $f0f0 match if  >black ."  (# " 
+      inst @ (#) over 2 + @-t (#) 8 lshift or dec. then
+      cr exit  then
+   .bad ;
+: .x5
+   $5000 $f000 match if  inst @ (#) hex.
+      inst @ 4 rshift $0f and 16 + .reg ." subi,"
+      $6080 $f0f0 match if  >black ."  (# " 
+      inst @ (#) over 2 + @-t (#) 8 lshift or dec. then
+      cr exit  then
+   .bad ;
 : .x6
    $6000 $f000 match if  inst @ (#) hex.
       inst @ 4 rshift $0f and 16 + .reg ." ori,"
@@ -112,7 +123,6 @@ create 'regs  char N c, char T c, char X c, char Y c, char Z c,
       inst @ (#) over 2 + @-t (#) 8 lshift or dec. then
       cr exit  then
    .bad ;
-\ : .x7 .bad ;
 : .x7
    $7000 $f000 match if  inst @ (#) hex.
       inst @ 4 rshift $0f and 16 + .reg ." andi,"

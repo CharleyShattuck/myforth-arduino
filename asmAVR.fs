@@ -118,6 +118,7 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : ori, ( n reg)  $6000 imm m;
 : andi, ( n reg)  $7000 imm m;
 : subi, ( n reg)  $5000 imm m;
+: sbci, ( n reg)  $4000 imm m;
 
 : in/out ( port opcode reg)  4 lshift $1f0 and or
     swap $20 -  dup 0 $60 within 0= if  abort" port out of range" then

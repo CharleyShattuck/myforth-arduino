@@ -30,11 +30,12 @@ nowarn
 \ Subroutine threaded.
 \ reserve registers 0 and 1 for the mul instruction.
 \ ***** assigned in job.fs, shared by disAVR.fs ***** /
-\ 30 constant Z   31 constant Z' (Z register, used as loop counter)
+\ 30 constant Z   31 constant Z' (program memory address register)
 \ 28 constant Y   \ address register (A register)
 \ 26 constant X   \ pointer to rest of stack (S register)
 \ 24 constant T   25 constant T'   \ top of stack
 \ 22 constant N   23 constant N'   \ next on stack (temporary)
+\ 20 constant W   21 constant W'   \ loop counter
 \ $3e constant SPH  $3d constant SPL   \ return stack pointer
 
 \ ----- Target Forth Primitives ----- /
@@ -130,15 +131,18 @@ nowarn
    [ 8 rshift $ff and ] T' ldi,  m;
 :m ~#, ( n)  host invert  target #,  m;  \ 2 or 4
 
-\ counted loop, be careful about using the Z register inside!
 \ 10 for counts from 10 down to 1 in Z (R), but i shows the index
 \ as 9 down to 0. r@ gets the unmodified index, 10 to 1,
-\ or whatever else may be in Z.
+\ or whatever else may be in W.
+:m ##for ( n)  hide  W push,  W' push,
+   [ dup $ff and ] W ldi,  [ 8 rshift $ff and ] W' ldi,
+   begin,  m;
 :m for ( - adr)  hide
-   Z' push,  Z push,  T Z movw,  drop begin  m;  \ 5 (once)
-:m next ( adr)  1 Z sbiw,  [ rel $7f and ] brne,  \ 2 (inside loop)
-   Z pop,  Z' pop,  hide m;  \ 2 (at finish)
-:m r@ ( - n)  ?dup  Z T movw,  m;
+   W' push,  W push,  T W movw,  drop begin  m;  \ 5 (once)
+:m next ( adr)  1 W subi,  0 W sbci,
+   [ rel $7f and ] brne,  \ 2 (inside loop)
+   W pop,  W' pop,  hide m;  \ 2 (at finish)
+:m r@ ( - n)  ?dup  W T movw,  m;
 :m i ( - n)  r@  1 T sbiw,  m;
 
 \ 32 bit result in 2,3,4,5

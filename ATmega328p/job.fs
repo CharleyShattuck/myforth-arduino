@@ -1,7 +1,7 @@
 \ job.fs
 
 0 [if]
-Copyright (C) 2009-2015 by Charles Shattuck.
+Copyright (C) 2009-2016 by Charles Shattuck.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -57,11 +57,12 @@ warn \ warnings on
 
 include ../ATmega328.fs  \ Special Function Registers
 
-30 constant Z   31 constant Z'   \ used as loop counter
-28 constant Y   29 constant Y'   \ address register
+30 constant Z   31 constant Z'   \ program address register 
+28 constant Y   29 constant Y'   \ RAM address register
 26 constant X   27 constant X'   \ pointer to rest of stack
 24 constant T   25 constant T'   \ top of stack
 22 constant N   23 constant N'   \ next on stack (temporary)
+20 constant W   21 constant W'   \ loop counter
 
 include ../compiler.fs
 include ../disAVR.fs
