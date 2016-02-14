@@ -91,6 +91,7 @@ nowarn
 :m |over  nip  N' -stx,  N -stx,  dup  N T movw,  m;  \ 7
 :m push  T push,  T' push,  drop  m;  \ 2 or 4
 :m pop  ?dup  T' pop,  T pop,  m;  \ 2 or 4
+:m r@  pop  T push,  T' push,  m;
 
 \ binary
 :m |+  nip  N T add,  N' T' adc,  m;  \ 4
@@ -132,18 +133,18 @@ nowarn
 :m ~#, ( n)  host invert  target #,  m;  \ 2 or 4
 
 \ 10 for counts from 10 down to 1 in Z (R), but i shows the index
-\ as 9 down to 0. r@ gets the unmodified index, 10 to 1,
-\ or whatever else may be in W.
-:m ##for ( n)  hide  W push,  W' push,
-   [ dup $ff and ] W ldi,  [ 8 rshift $ff and ] W' ldi,
-   begin,  m;
+\ as 9 down to 0. (i) gets the unmodified index, 10 to 1,
+\ or whatever else may be in Z.
+:m ##for ( n)  hide  Z push,  Z' push,
+   [ dup $ff and ] Z ldi,  [ 8 rshift $ff and ] Z' ldi,
+   begin  m;
 :m for ( - adr)  hide
-   W' push,  W push,  T W movw,  drop begin  m;  \ 5 (once)
-:m next ( adr)  1 W subi,  0 W sbci,
+   Z' push,  Z push,  T Z movw,  drop begin  m;  \ 5 (once)
+:m next ( adr)  1 Z sbiw, 
    [ rel $7f and ] brne,  \ 2 (inside loop)
-   W pop,  W' pop,  hide m;  \ 2 (at finish)
-:m r@ ( - n)  ?dup  W T movw,  m;
-:m i ( - n)  r@  1 T sbiw,  m;
+   Z pop,  Z' pop,  hide m;  \ 2 (at finish)
+:m (i) ( - n)  ?dup  Z T movw,  m;
+:m i ( - n)  (i) 1 T sbiw,  m;
 
 \ 32 bit result in 2,3,4,5
 :m |16*16=32
