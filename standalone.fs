@@ -30,7 +30,7 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 -: huh?  [ char ? ] #, emit forward ( *)
 -: ?stack  depth -if  huh? ; then  drop ;
 
-\ Z is no longer used as a loop counter.
+\ Z is also used as a loop counter, so be careful!
 -: c@p+ ( - c)  dup  lpm,  0 T' ldi,  0 T mov,  1 Z adiw,  ;
 -: c@p ( - c)  c@p+  1 Z sbiw,   ;
 -: @p+ ( - n)  dup  lpm,  1 Z adiw,  0 T mov,
