@@ -40,6 +40,12 @@ nowarn
 
 \ ----- Target Forth Primitives ----- /
 
+\ hand optimizing
+:m apush  Y' push,  Y push,  m;
+:m apop  Y pop,  Y' pop,  m;
+:m zpush  Z' push,  Z push,  m;
+:m zpop  Z pop,  Z' pop,  m;
+
 :m nop  nop,  m;
 
 :m begin ( - adr)  hide here  m;
@@ -135,14 +141,14 @@ nowarn
 \ 10 for counts from 10 down to 1 in Z (R), but i shows the index
 \ as 9 down to 0. (i) gets the unmodified index, 10 to 1,
 \ or whatever else may be in Z.
-:m ##for ( n)  hide  Z push,  Z' push,
+:m ##for ( n)  hide zpush
    [ dup $ff and ] Z ldi,  [ 8 rshift $ff and ] Z' ldi,
    begin  m;
-:m for ( - adr)  hide
-   Z' push,  Z push,  T Z movw,  drop begin  m;  \ 5 (once)
+:m for ( - adr)  hide zpush
+   T Z movw,  drop begin  m;  \ 5 (once)
 :m next ( adr)  1 Z sbiw, 
    [ rel $7f and ] brne,  \ 2 (inside loop)
-   Z pop,  Z' pop,  hide m;  \ 2 (at finish)
+   zpop  hide m;  \ 2 (at finish)
 :m (i) ( - n)  ?dup  Z T movw,  m;
 :m i ( - n)  (i) 1 T sbiw,  m;
 
@@ -166,12 +172,6 @@ nowarn
       T 4 cp,  T' 5 cpc,  N' 6 cpc,  \ trial subtraction
       3 brcs,  2 inc,  T 4 sub,  T' 5 sbc,  \ actual subtraction
       N dec,  2 breq,  ljmp,  m;
-
-\ hand optimizing
-:m apush  Y' push,  Y push,  m;
-:m apop  Y pop,  Y' pop,  m;
-:m zpush  Z' push,  Z push,  m;
-:m zpop  Z pop,  Z' pop,  m;
 
 :m variable  :  cpuHERE #, 2 cpuALLOT  exit m;
 :m cvariable  :  cpuHERE #, 1 cpuALLOT  exit m;
