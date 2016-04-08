@@ -157,7 +157,6 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : brmi, ( rel) 3 lshift $f002 or ,-t  m;
 : then, ( a)  begin, >r dup org r@  rel $7f and
     3 lshift over @-t $fc07 and or swap !-t  r> org  m;
-: tif, ( - a)  begin, [ dup rel $7f and ]  brtc,  m;
 
 : brvc, ( rel) 3 lshift $f403 or ,-t  m;
 : brvs, ( rel) 3 lshift $f003 or ,-t  m;
@@ -169,6 +168,7 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : brts, ( rel) 3 lshift $f006 or ,-t  m;
 : brid, ( rel) 3 lshift $f407 or ,-t  m;
 : brie, ( rel) 3 lshift $f007 or ,-t  m;
+: tif, ( - a)  begin, [ dup rel $7f and ]  brtc,  m;
 
 : sbic, ( bit reg) io-bit  $9900 or ,-t  m;
 : sbis, ( bit reg) io-bit  $9b00 or ,-t  m;
