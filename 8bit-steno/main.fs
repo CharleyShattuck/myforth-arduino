@@ -15,7 +15,7 @@ host
 :m # ( n)  T ldi,  m;
 :m @ ( reg)  ldy,  m;
 :m ! ( reg)  sty,  m;
-:m ? ( reg)  dup and,  m;
+:m ? ( reg)  [ dup ] and,  m;
 :m ##a! ( n)  Y ldi,  0 Y' ldi,  m;
 :m #- ( n)  T subi,  m;
 :m #+ ( n)  [ negate $ff and ]  T subi,  m;
@@ -23,27 +23,21 @@ host
 :m #or ( n)  T ori,  m;
 :m push ( reg)  -stx,  m;
 :m pop ( reg)  ldx+,  m;
-:m ##for ( n)   hide  W push,  W' push,
-    [ dup $ff and ] W ldi,
-    [ 8 rshift $ff and ] W' ldi,
-    begin,  m;
-:m next,  1 W sbiw,  [ rel $7f and ] brne,
-     W' pop,  W pop,  hide  m;
-:m ##ms ( n)  ##for 4000 ##for next, next, m;
-:m ##us ( n)  [ 2* 2* ] ##for next, m;
+:m ##ms ( n)  ##for 4000 ##for next next m;
+:m ##us ( n)  [ 2* 2* ] ##for next m;
 
 target
 : emit ( T)  UCSR0A ##a!
     begin,  N @  $20 N andi,  until,
     UDR0 ##a!  T !  ;
 
-\ : cr  13 # emit  10 # emit ; 
-\ : space  32 # emit ;
+: cr  13 # emit  10 # emit ; 
+: space  32 # emit ;
 
-\ : digit ( T - T)  $0f #and  $0A #-  -if,  
-\         $3A #+  ;  then,  $41 #+  ;
-\ : h. ( T)   T push  T ror,  T ror,  T ror,  T ror,
-\     digit emit  T pop  digit emit  space  ;
+: digit ( T - T)  $0f #and  $0A #-  -if,  
+        $3A #+  ;  then,  $41 #+  ;
+: h. ( T)   T push  T ror,  T ror,  T ror,  T ror,
+    digit emit  T pop  digit emit  space  ;
 
 
 host
@@ -96,13 +90,13 @@ target
     b3 T mov,  b3 ? if,  $c0 #or  then,  emit 
     13 low, ;
 
-\ : show
-\     b0 T mov, h. 
-\     b1 T mov, h. 
-\     b2 T mov, h. 
-\     b3 T mov, h. 
-\     cr ;
+: show
+    b0 T mov, h. 
+    b1 T mov, h. 
+    b2 T mov, h. 
+    b3 T mov, h. 
+    cr ;
 
 : go  init
-    begin, scan send again,
+    begin, scan ( show) send again,
 

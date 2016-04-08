@@ -60,18 +60,17 @@ warn \ warnings on
 
 include ../ATmega328.fs  \ Special Function Registers
 
-30 constant Z   31 constant Z'   \ program memory address register 
+30 constant Z   31 constant Z'   \ program memory address register
+                                 \ and loop counter
 28 constant Y   29 constant Y'   \ address register
 26 constant X   27 constant X'   \ pointer to rest of stack
-24 constant W   25 constant W'   \ loop counter
-22 constant T   23 constant T'   \ top of stack and
-20 constant N   21 constant N'   \ next on stack (temporary)
-18 constant M   18 constant M'
-16 constant O   17 constant O'
+24 constant T   25 constant T'   \ top of stack and
+22 constant N   23 constant N'   \ next on stack (temporary)
 
 include ../compiler.fs
 include ../disAVR.fs
 include ../asmAVR.fs
+include ../miscAVR.fs
 
 :m init-stacks
    [ r0 dup 8 rshift $ff and ] T ldi,  T SPH out,

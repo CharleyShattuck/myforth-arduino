@@ -31,11 +31,11 @@ nowarn
 \ reserve registers 0 and 1 for the mul instruction.
 \ ***** assigned in job.fs, shared by disAVR.fs ***** /
 \ 30 constant Z   31 constant Z' (program memory address register)
+\                                (and loop counter)
 \ 28 constant Y   \ address register (A register)
 \ 26 constant X   \ pointer to rest of stack (S register)
 \ 24 constant T   25 constant T'   \ top of stack
 \ 22 constant N   23 constant N'   \ next on stack (temporary)
-\ 20 constant W   21 constant W'   \ loop counter
 \ $3e constant SPH  $3d constant SPL   \ return stack pointer
 
 \ ----- Target Forth Primitives ----- /
