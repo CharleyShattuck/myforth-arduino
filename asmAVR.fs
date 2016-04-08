@@ -133,6 +133,10 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : cbi, ( bit reg) io-bit  $9800 or ,-t  m;
 
 : clc,  $9488 ,-t  m;
+: sec,  $9468 ,-t  m;
+: set,  $9468 ,-t  m;  \ set T flag
+: clt,  $94e8 ,-t  m;  \ clr T flag
+: swap,  4 lshift $01f0 and $9402 or ,-t  m;
 : ror, ( reg) 4 lshift $01f0 and $9407 or ,-t  m;
 : bld, ( bit reg) 4 lshift $01f0 and $f800 or or ,-t  m;
 : bst, ( bit reg) 4 lshift $01f0 and $fa00 or or ,-t  m;
@@ -153,6 +157,7 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : brmi, ( rel) 3 lshift $f002 or ,-t  m;
 : then, ( a)  begin, >r dup org r@  rel $7f and
     3 lshift over @-t $fc07 and or swap !-t  r> org  m;
+: tif, ( - a)  begin, [ dup rel $7f and ]  brtc,  m;
 
 : brvc, ( rel) 3 lshift $f403 or ,-t  m;
 : brvs, ( rel) 3 lshift $f003 or ,-t  m;
