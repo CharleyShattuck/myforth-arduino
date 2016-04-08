@@ -141,6 +141,9 @@ nowarn
 \ 10 for counts from 10 down to 1 in Z (R), but i shows the index
 \ as 9 down to 0. (i) gets the unmodified index, 10 to 1,
 \ or whatever else may be in Z.
+\ Note that you should not try to read from program memory
+\ inside a for, next loop. The Z register will be corrupted.
+\ Use begin loop instead and keep the count in T.
 :m ##for ( n)  hide zpush
    [ dup $ff and ] Z ldi,  [ 8 rshift $ff and ] Z' ldi,
    begin  m;
