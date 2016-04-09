@@ -1,4 +1,4 @@
-\ ATmega328.fs
+\ test328.fs -- 150925 rjn
 
 \ ----- "Low" Special Function Registers ----- /
 \ can be addressed with IN or OUT
@@ -102,7 +102,34 @@ $c4 constant UBRR0L  \ USART Baud Rate Register Low
 $c5 constant UBRR0H  \ USART Baud Rate Register High
 $c6 constant UDR0    \ USART I/O Data Register
 
-: PORT ( n - bit port)   dup 8 < if PORTD exit then  -8 + PORTB ;
-: DDR ( n - bit port)   dup 8 < if DDRD exit then  -8 + DDRB ;
-: PIN ( n - bit port)   dup 8 < if PIND exit then  -8 + PINB ;
-   
+\ original code for reference (no support for PORTC)
+\ : PORT ( n - bit port)   dup 8 < if PORTD exit then  -8 + PORTB ;
+\ : DDR ( n - bit port)   dup 8 < if DDRD exit then  -8 + DDRB ;
+\ : PIN ( n - bit port)   dup 8 < if PIND exit then  -8 + PINB ;
+  
+: enum ( n - n')  8 0 do  dup constant 1 + loop ;
+
+0
+enum PD0 PD1 PD2 PD3 PD4 PD5 PD6 PD7
+enum PB0 PB1 PB2 PB3 PB4 PB5 PB6 PB7
+enum PC0 PC1 PC2 PC3 PC4 PC5 PC6 PC7
+drop
+
+: ports, ( port)  8 0 do  i c,  dup c,  loop  drop ;
+
+create arduino-pins
+    PORTD ports,
+    PORTB ports,
+    PORTC ports,
+
+: PORT ( i - bit adr)  2* arduino-pins + dup c@ swap 1+ c@ ;
+: DDR ( i - bit adr)  PORT 1 - ;
+: PIN ( i - bit adr)  PORT 2 - ;
+
+\ examples:
+\  2 PORT --> 2 $2B ( 2 PORTD) \ maintains original Arduino pin mapping
+\ 13 PORT --> 5 $25 ( 5 PORTB) \ maintains original Arduino pin mapping
+\ 23 PORT --> 7 $28 ( 7 PORTC) \ alternate form, not related to original Arduino
+\ PB5 toggle, \ toggles PORTB, bit 5 -- on-board LED
+
+
