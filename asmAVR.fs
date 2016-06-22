@@ -24,17 +24,18 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 :m interrupt ( adr)  2* 2 + target here host 2/ swap !-t  m;
 :m reti,  $9518 ,-t m;
 
+\ This is where a byte address becomes a relative word address
 :m rel ( adr - n)  here - 2/ 1 -  m;
 
 :m rcall, ( a)  rel $0fff and $d000 or ,-t  m;
 :m lcall, ( a)  $940e ,-t  2/ ,-t  m;
-:m call, ( a)  hint dup here - abs $1fff < if
+:m call, ( a)  hint dup here - abs $fff < if
    rcall, exit then  lcall, ;
 
 :m rjmp, ( a)  rel $0fff and $c000 or ,-t  m;
 :m ljmp, ( a)  $940c ,-t  2/ ,-t  m;
 \ :m jump, ( a)  ljmp,  m;
-:m jump, ( a)  hint dup here - abs $1fff < if
+:m jump, ( a)  hint dup here - abs $fff < if
     rjmp, exit then  ljmp, ;
 :m again, ( a)  jump,  m;
 
