@@ -9,18 +9,21 @@
 \       2    K O P D
 \       3    P * B Z
 \       4    W E L #
-\       5    H U G
+\       5    H U
+
+13 constant LED
 
 cvariable b0
 cvariable b1
 cvariable b2
 cvariable b3
 
-\ weak pullup on PORTC pins
+\ weak pullup on PORTC and PORTD pins
 \ high impedence on column pins
-: init  0 N ldi,  N DDRC out,  $ff N ldi,  N PORTC out,
-    PB0 input,  PB1 input,  PB2 input,  PB3 input, ;
-
+: init  0 N ldi,  N DDRC out,  N DDRD out,  N PORTD out,
+    $ff N ldi,  N PORTC out,  N PORTD out,
+    $f0 N ldi,  N PORTB out, ;
+    
 : +col0  PB0 output, PB0 low, ;
 : -col0  PB0 input, ;
 : +col1  PB1 output, PB1 low, ;
@@ -48,7 +51,9 @@ cvariable b3
 : scan
     begin zero
         begin look until/  20 #, ms look until/
-    begin look while/ repeat ;
+    LED high,
+    begin look while/ repeat
+    LED low, ;
 
 : send
     b0 c@ if dup emit then drop
