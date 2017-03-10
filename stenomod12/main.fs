@@ -44,7 +44,7 @@ cvariable b3
     +col3 wait read dup b0 or!c -col3
     +col2 wait read dup b1 or!c -col2 or
     +col1 wait read dup b2 or!c -col1 or
-    +col0 wait read dup b3 or!c -col0 or ;
+    +col0 wait read $1f #, and dup b3 or!c -col0 or ;
 
 : ms ( n)  for 4000 #, for next next ;
 : zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
