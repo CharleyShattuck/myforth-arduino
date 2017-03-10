@@ -9,7 +9,7 @@
 \       2    K O P D
 \       3    P * B Z
 \       4    W E L #
-\       5    H U
+\       5    H U G
 
 13 constant LED
 
