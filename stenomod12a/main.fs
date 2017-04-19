@@ -84,38 +84,38 @@ cvariable b3
 : send-gemini
     $80 #, emit
     0 #, 
-       $01 #, $20 #, b0 shuffle
-       $02 #, $10 #, b0 shuffle
-       $04 #, $08 #, b0 shuffle
-       $08 #, $04 #, b0 shuffle
-       $10 #, $02 #, b0 shuffle
-       $20 #, $01 #, b0 shuffle
-       $40 #, $20 #, b3 shuffle
+       $40 #, $20 #, b3 shuffle \ S1
+       $20 #, $01 #, b0 shuffle \ S2
+       $10 #, $02 #, b0 shuffle \ T-
+       $08 #, $04 #, b0 shuffle \ K-
+       $04 #, $08 #, b0 shuffle \ P-
+       $02 #, $10 #, b0 shuffle \ W-
+       $01 #, $20 #, b0 shuffle \ H-
        emit
     0 #,
-       $40 #, $01 #, b1 shuffle
-       $20 #, $02 #, b1 shuffle 
-       $10 #, $04 #, b1 shuffle
-       $08 #, $08 #, b1 shuffle
+       $40 #, $01 #, b1 shuffle \ R-
+       $20 #, $02 #, b1 shuffle \ A-
+       $10 #, $04 #, b1 shuffle \ O-
+       $08 #, $08 #, b1 shuffle \ *1
        emit
     0 #,
-       $08 #, $10 #, b1 shuffle
-       $04 #, $20 #, b1 shuffle
-       $02 #, $01 #, b2 shuffle
-       $01 #, $02 #, b2 shuffle
+       $08 #, $10 #, b1 shuffle \ -E
+       $04 #, $20 #, b1 shuffle \ -U
+       $02 #, $01 #, b2 shuffle \ -F
+       $01 #, $02 #, b2 shuffle \ -R
        emit
     0 #,
-       $40 #, $04 #, b2 shuffle
-       $20 #, $08 #, b2 shuffle
-       $10 #, $10 #, b2 shuffle
-       $08 #, $20 #, b2 shuffle
-       $04 #, $01 #, b3 shuffle
-       $02 #, $02 #, b3 shuffle
-       $01 #, $04 #, b3 shuffle
+       $40 #, $04 #, b2 shuffle \ -P
+       $20 #, $08 #, b2 shuffle \ -B
+       $10 #, $10 #, b2 shuffle \ -L
+       $08 #, $20 #, b2 shuffle \ -G
+       $04 #, $01 #, b3 shuffle \ -T
+       $02 #, $02 #, b3 shuffle \ -S
+       $01 #, $04 #, b3 shuffle \ -D
        emit
     0 #,
-       $02 #, $10 #, b3 shuffle
-       $01 #, $08 #, b3 shuffle
+       $02 #, $10 #, b3 shuffle \ #C
+       $01 #, $08 #, b3 shuffle \ -Z
        emit
     ;
 
