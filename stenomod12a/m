@@ -1,0 +1,3 @@
+set -x
+minicom -D/dev/ttyUSB1
+
