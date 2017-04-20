@@ -72,7 +72,13 @@ cvariable b3
     begin look while/ repeat
     LED low, ;
 
-: shuffle ( w m m a - w)
+\ b accumulates bits for next byte in protocol
+\ md is the bit mask for destination
+\ ms is the bit mask for source
+\ a is the address of the input variable
+\ so shuffle moves a bit into a new position
+\ and leaves it in the accumulater
+: shuffle ( w md ms a - w)
     c@ and if/  over or ; then  drop ;
 
 : send-TX
