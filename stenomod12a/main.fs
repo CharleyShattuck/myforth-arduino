@@ -58,19 +58,10 @@ cvariable b3
     +col3 wait read dup b0 or!c -col3
     +col2 wait read dup b1 or!c -col2 or
     +col1 wait read dup b2 or!c -col1 or
-    +col0 wait read dup b3 or!c -col0 or ;
-\    +col0 wait read dup $20 #, and if/
-\        1 #, b0 or!c
-\    then  dup $1f #, and b3 or!c -col0 or ;
-
-: ms ( n)  for 4000 #, for next next ;
-: zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
-: scan
-    begin zero
-        begin look until/  20 #, ms look until/
-    LED high,
-    begin look while/ repeat
-    LED low, ;
+\    +col0 wait read dup b3 or!c -col0 or ;
+    +col0 wait read dup $20 #, and if/
+        1 #, b0 or!c
+    then  dup $1f #, and b3 or!c -col0 or ;
 
 \ b accumulates bits for next byte in protocol
 \ md is the bit mask for destination
@@ -129,10 +120,31 @@ cvariable b3
 
 : send
 \   send-hex
-\   send-TX
-    send-gemini    
+    send-TX
+\   send-gemini    
     ;
 
+: ms ( n)  for 4000 #, for next next ;
+
+variable timing
+variable repeating
+
+: threshold (  - n)  10000 #, ;
+
+: timeout? ( - ?)  1 #, timing @ + dup timing !
+    threshold swap - 0< ;
+    
+: ?repeat  repeating @ if/  send 100 #, ms ; then
+    timeout? if/  -1 #, repeating ! then ; 
+
+: zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
+: scan
+    begin  zero 0 #, dup timing ! repeating !
+        begin  look until/  20 #, ms look until/
+    LED high,
+    begin  look while/  ?repeat repeat  send
+    LED low, ;
+
 : go  init
-    begin scan send again
+    begin scan  again
 
