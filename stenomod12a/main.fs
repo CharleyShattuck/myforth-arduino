@@ -78,7 +78,7 @@ cvariable b3
 \ a is the address of the input variable
 \ so shuffle moves a bit into a new position
 \ and leaves it in the accumulater
-: shuffle ( w md ms a - w)
+: shuffle ( b md ms a - b)
     c@ and if/  over or ; then  drop ;
 
 : send-TX
