@@ -1,5 +1,4 @@
 set -x
-f
 avrdude \
     -v \
     -carduino \

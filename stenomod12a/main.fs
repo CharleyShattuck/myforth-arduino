@@ -58,10 +58,11 @@ cvariable b3
     +col3 wait read dup b0 or!c -col3
     +col2 wait read dup b1 or!c -col2 or
     +col1 wait read dup b2 or!c -col1 or
-\    +col0 wait read dup b3 or!c -col0 or ;
-    +col0 wait read dup $20 #, and if/
-        1 #, b0 or!c
-    then  dup $1f #, and b3 or!c -col0 or ;
+\    +col0 wait read dup b3 or!c -col0 or ;  \ separate S keys
+\    +col0 wait read dup $20 #, and if/
+\        1 #, b0 or!c
+\    then  dup $1f #, and b3 or!c -col0 or ;  \ merge S keys
+    +col0 wait read $1f #, and dup b3 or!c -col0 or ;  \ only 1 S key
 
 \ b accumulates bits for next byte in protocol
 \ md is the bit mask for destination
@@ -69,14 +70,8 @@ cvariable b3
 \ a is the address of the input variable
 \ so shuffle moves a bit into a new position
 \ and leaves it in the accumulater
-: shuffle ( b md ms a - b)
-    c@ and if/  over or ; then  drop ;
-
-: send-TX
-    b0 c@ if dup emit then drop
-    b1 c@ if dup $40 #, or emit then drop
-    b2 c@ if dup $80 #, or emit then drop
-    b3 c@ if $c0 #, or then emit ;
+: shuffle ( b md ms a - b')
+    c@ and if/  or ; then  drop ;
 
 : send-gemini
     $80 #, emit
@@ -116,12 +111,18 @@ cvariable b3
        emit
     ;
 
+: send-TX
+    b0 c@ if dup emit then drop
+    b1 c@ if dup $40 #, or emit then drop
+    b2 c@ if dup $80 #, or emit then drop
+    b3 c@ if $c0 #, or then emit ;
+
 : send-hex  hex  b0 c@ .  b1 c@ .  b2 c@ .  b3 c@ .  cr ;
 
 : send
 \   send-hex
-    send-TX
-\   send-gemini    
+\   send-TX
+    send-gemini    
     ;
 
 : ms ( n)  for 4000 #, for next next ;
@@ -145,6 +146,7 @@ variable repeating
     begin  look while/  ?repeat repeat  send
     LED low, ;
 
-: go  init
-    begin scan  again
+
+: go  init 
+    begin scan again
 
