@@ -121,21 +121,28 @@ cvariable b3
 
 : send
 \   send-hex
-\   send-TX
-    send-gemini    
+    send-TX
+\   send-gemini    
     ;
 
 : ms ( n)  for 4000 #, for next next ;
 
-variable timing
 variable repeating
+variable timing
+: norepeat   0 #, dup timing ! repeating ! ;
+
+\ check for release every ms or so.
+\ when released exit from ?release
+\ to avoid the then unnecessary send
+: check ( n)  for 4000 #, for next
+    look 0= if/  norepeat pop drop pop drop ; then next ;
 
 : threshold (  - n)  10000 #, ;
 
 : timeout? ( - ?)  1 #, timing @ + dup timing !
     threshold swap - 0< ;
     
-: ?repeat  repeating @ if/  send 100 #, ms ; then
+: ?repeat  repeating @ if/  100 #, check send ; then
     timeout? if/  -1 #, repeating ! then ; 
 
 : zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
