@@ -54,6 +54,7 @@ false value merge-S?     \ merge the split S keys into one
 true value gemini?       \ choose the protocol
 \ end configuration
 
+: ms ( n)  for 4000 #, for next next ;
 
 13 constant LED
 
@@ -154,31 +155,40 @@ gemini? [if]  \ define "send" in Gemini or TX
 
 [then]
 
-key-repeat? [if]  \ include stroke repeat function
+: zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
 
-: ms ( n)  for 4000 #, for next next ;
+key-repeat? [if]  \ include stroke repeat functio
+
+\ remember the stroke that triggered the repeat
+cvariable b0'
+cvariable b1'
+cvariable b2'
+cvariable b3'
+: keep  b0 c@ b0' c!  b1 c@ b1' c!
+    b2 c@ b2' c!  b3 c@ b3' c! ;
+: recall  b0' c@ b0 c!  b1' c@ b1 c!
+    b2' c@ b2 c!  b3' c@ b3 c! ;
 
 variable repeating
 variable timing
-: norepeat   0 #, dup timing ! repeating ! ;
+: norepeat  zero 0 #, dup timing ! repeating ! ;
 
 \ check for release every ms or so.
 \ when keys are released exit two levels up
 \ to avoid the unnecessary send
 : check ( n)  for 4000 #, for next
-    look 0= if/  norepeat pop drop pop drop ; then next ;
+    look 0= if/  norepeat pop drop ; then next ;
 
 : threshold (  - n)  10000 #, ;
 
 : timeout? ( - ?)  1 #, timing @ + dup timing !
     threshold swap - 0< ;
     
-: ?repeat  repeating @ if/  100 #, check send ; then
-    timeout? if/  -1 #, repeating ! then ;
+: ?repeat  repeating @ if/  100 #, check recall send ; then
+    timeout? if/  -1 #, repeating ! keep then ;
 
 [then]
 
-: zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
 : scan  begin  zero 
 key-repeat? [if]  0 #, dup timing ! repeating ! [then]
         begin  look until/  20 #, ms look until/
