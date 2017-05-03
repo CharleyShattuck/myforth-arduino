@@ -157,7 +157,7 @@ gemini? [if]  \ define "send" in Gemini or TX
 
 : zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
 
-key-repeat? [if]  \ include stroke repeat functio
+key-repeat? [if]  \ include stroke repeat function
 
 \ remember the stroke that triggered the repeat
 cvariable b0'
