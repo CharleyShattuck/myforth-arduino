@@ -50,8 +50,8 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 \ begin configuration
 true value key-repeat?   \ allow strokes to repeat if held
-false value merge-S?     \ merge the split S keys into one
-true value gemini?       \ choose the protocol
+true value merge-S?      \ merge the split S keys into one
+false value gemini?      \ choose the protocol
 \ end configuration
 
 : ms ( n)  for 4000 #, for next next ;
@@ -155,11 +155,10 @@ gemini? [if]  \ define "send" in Gemini or TX
 
 [then]
 
-: zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
 
 key-repeat? [if]  \ include stroke repeat function
 
-\ remember the stroke that triggered the repeat
+\ remember the stroke
 cvariable b0'
 cvariable b1'
 cvariable b2'
@@ -168,10 +167,15 @@ cvariable b3'
     b2 c@ b2' c!  b3 c@ b3' c! ;
 : recall  b0' c@ b0 c!  b1' c@ b1 c!
     b2' c@ b2 c!  b3' c@ b3 c! ;
+: same ( - f)  b0 c@ b0' c@ =  b1 c@ b1' c@ = and
+    b2 c@ b2' c@ = and  b3 c@ b3' c@ = and ;
+
+: zero  keep
+    b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
 
 variable repeating
 variable timing
-: norepeat  zero 0 #, dup timing ! repeating ! ;
+: norepeat  zero keep 0 #, dup timing ! repeating ! ;
 
 \ check for release every ms or so.
 \ when keys are released exit two levels up
@@ -179,13 +183,17 @@ variable timing
 : check ( n)  for 4000 #, for next
     look 0= if/  norepeat pop drop ; then next ;
 
-: threshold (  - n)  10000 #, ;
+: threshold (  - n)  5000 #, ;
 
 : timeout? ( - ?)  1 #, timing @ + dup timing !
-    threshold swap - 0< ;
+    threshold swap - 0<  same and ;
     
 : ?repeat  repeating @ if/  100 #, check recall send ; then
     timeout? if/  -1 #, repeating ! keep then ;
+
+[else]
+
+: zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
 
 [then]
 
