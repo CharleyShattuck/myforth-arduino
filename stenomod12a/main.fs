@@ -155,9 +155,6 @@ gemini? [if]  \ define "send" in Gemini or TX
 
 [then]
 
-
-key-repeat? [if]  \ include stroke repeat function
-
 \ remember the stroke
 cvariable b0'
 cvariable b1'
@@ -175,7 +172,9 @@ cvariable b3'
 
 variable repeating
 variable timing
-: norepeat  zero keep 0 #, dup timing ! repeating ! ;
+variable short
+: norepeat  zero keep 0 #,
+    dup timing ! dup repeating ! short ! ;
 
 \ check for release every ms or so.
 \ when keys are released exit two levels up
@@ -183,29 +182,26 @@ variable timing
 : check ( n)  for 4000 #, for next
     look 0= if/  norepeat pop drop ; then next ;
 
-: threshold (  - n)  5000 #, ;
+: threshold (  - n)  3000 #, ;
+: sub-threshold (  - n)  750 #, ;
+
+\ only a very short first tap allows a repeat
+: ?short  timing @ sub-threshold - 0< short ! ;    
 
 : timeout? ( - ?)  1 #, timing @ + dup timing !
-    threshold swap - 0<  same and ;
+    threshold swap - 0<  same and  short @ and ;
     
 : ?repeat  repeating @ if/  100 #, check recall send ; then
     timeout? if/  -1 #, repeating ! keep then ;
 
-[else]
-
-: zero  b0 a! 0 #, dup c!+ dup c!+ dup c!+ c!+ ;
-
-[then]
-
 : scan  begin  zero 
-key-repeat? [if]  0 #, dup timing ! repeating ! [then]
-        begin  look until/  20 #, ms look until/
+    0 #, dup timing ! repeating !
+    begin  look until/  20 #, ms look until/
     LED high,
-    begin  look while/
-key-repeat? [if]  ?repeat  [then]
-    repeat  send
+    begin  look while/ ?repeat
+    repeat  ?short send
     LED low, ;
 
-: go  init 
+: go  init norepeat 
     begin scan again
 
