@@ -25,3 +25,19 @@ The stenomod firmware exists in a virtual address space in the dictionary. This 
 Now that we have a virtual memory space for stenomod's firmware, we need some convenient words to use to access it. We have @ and ! for Forth's main address space. Let's define @-t and !-t for the virtual address space. Think of "-t" to mean "there" or in the "target". These virtual operators just internally add an offset to the address on the stack to fetch or store in the  target space instead of the host space. This way you can pretend you're reading and writing the actual target instead some data structure in the host memory.
 
 There is a Forth primitive called "," which pops a number from the stack and stores it in the dictionary at the next available spot. Then "here" is updated to point just after that spot. The word is pronounced "comma". This is the most basic word in a Forth target assembler, which happens to be what we're building here. If you know exactly what you want in your target dictionary in terms of the lowest level machine codes then you could just "comma" them in now and be done with it. Since that's not very productive nor fun, we'll add a few more words to make things easier.
+
+## What else can a computer do, besides fetch and store memory?
+
+Well, computers do arithmetic and logic. These operations are done to the one or two items on top of the stack. "+" (pronounced "plus") pops two numbers off the stack, adds them together, and pushes the result back onto the stack. This is the pattern of a binary operator. Other binary operators are "and", "or", and "xor". A unary operator such as "invert" pops the top of stack, inverts all bits, and pushes the result back onto the stack. (Be aware that actual code for such Forth words will be written in whatever way is most efficient, and may not actually pop and push the stack. This is mostly just a mental model).
+
+The other important thing a computer can do is to choose a different path of execution based on the result of a test. In other words "if X then Y else Z". In Forth the word "if" branches based on the value it finds in T. This value probably gets there as the result of some test. Generally speaking, the value is consumed, or dropped before the branch is taken. Let's see if this is enough info about Forth to get us started.
+
+## Now to Walk Through Some Code
+
+Open the file "main.fs" and start reading. The first character in the first line is "\", which means comment to end of line. It's like // in C++ but was invented before we knew about //. Another comment operator is "(", which comments until a closing ")" is encountered. Finally, a way of commenting a range of lines is to start one with "0 [if]" and later on close it with "[then]". [if] and [then] are used for conditional compilation. "main.fs" is nothing but comments until line 52.
+
+Now is the time to learn about defining words.
+
+
+
+
