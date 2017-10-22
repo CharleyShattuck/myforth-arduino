@@ -49,7 +49,7 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 
 \ begin configuration
-true value key-repeat?   \ allow strokes to repeat if held
+false value key-repeat?   \ allow strokes to repeat if held
 true value merge-S?      \ merge the split S keys into one
 false value gemini?      \ choose the protocol
 \ end configuration
@@ -68,32 +68,38 @@ cvariable b3
 : init  0 N ldi,  N DDRC out,  N DDRD out,  N PORTD out,
     $ff N ldi,  N PORTC out,  N PORTD out,
     $f0 N ldi,  N PORTB out, ;
-    
+
+\ in the -colx words,
+\ yank the column high before letting it float
+\ to avoid spurious characters
+: us ( n)  2* 2* for next ;
+: wait  10 #, us ;
 : +col0  PB0 output, PB0 low, ;
-: -col0  PB0 input, ;
+: -col0  PB0 high,  wait  PB0 input,  PB0 low, ;
 : +col1  PB1 output, PB1 low, ;
-: -col1  PB1 input, ;
+: -col1  PB1 high,  wait  PB1 input,  PB1 low, ;
 : +col2  PB2 output, PB2 low, ;
-: -col2  PB2 input, ;
+: -col2  PB2 high,  wait  PB2 input,  PB2 low, ;
 : +col3  PB3 output, PB3 low, ;
-: -col3  PB3 input, ;
+: -col3  PB3 high,  wait  PB3 input,  PB3 low, ;
 
 : read ( - b)  0 #,  PINC T in,  $3f #, xor ;
 
 \ it seems that a delay is required after changing columns
 \ before reading the next one, to avoid spurious characters
-: us ( n)  2* 2* for next ;
-: wait  10 #, us ;
+\ and that delay has been moved into the -col words
 : or!c ( n a - )  swap over c@ or swap c! ;
 : look ( - flag)
-    +col3 wait read dup b0 or!c -col3
-    +col2 wait read dup b1 or!c -col2 or
-    +col1 wait read dup b2 or!c -col1 or
-    +col0 wait read dup 
+    +col3 ( wait) read dup b0 or!c -col3
+    +col2 ( wait) read dup b1 or!c -col2 or
+    +col1 ( wait) read dup b2 or!c -col1 or
+    +col0 ( wait) read dup 
 merge-S? [if]  \ merge the second S key in with the 1st
     $20 #, and if/  1 #, b0 or!c then
     dup $1f #, and
 [then]
+\ *** just disable the extra key...
+     \ drop $1f #, and dup \ ***
     b3 or!c -col0 or ;
 
 gemini? [if]  \ define "send" in Gemini or TX
@@ -198,9 +204,11 @@ variable short
     0 #, dup timing ! repeating !
     begin  look until/  20 #, ms look until/
     LED high,
-    begin  look while/ ?repeat
-    repeat  ?short send
-    LED low, ;
+    begin  look while/ 
+key-repeat? [if]  ?repeat  [then]
+    repeat  
+key-repeat? [if]  ?short  [then]
+    send  LED low, ;
 
 : go  init norepeat 
     begin scan again
