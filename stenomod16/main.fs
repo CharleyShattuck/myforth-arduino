@@ -1,5 +1,4 @@
-\ main.fs  modified for extra S- key
-\ and added Gemini PR protocol
+\ main.fs 
 
 0 [if]
 Copyright (C) 2016-2018 by Charles Shattuck.
