@@ -133,7 +133,7 @@ host \ These are 'assembler', not 'target forth', use host version of :
 : sbi, ( bit reg) io-bit  $9a00 or ,-t  m;
 : cbi, ( bit reg) io-bit  $9800 or ,-t  m;
 
-: clc,  $9488 ,-t  m;
+: clc,  $9088 ,-t  m;  \ bug fix 200512 rjn
 : sec,  $9468 ,-t  m;
 : set,  $9468 ,-t  m;  \ set T flag
 : clt,  $94e8 ,-t  m;  \ clr T flag
