@@ -46,7 +46,7 @@ here constant dict  \ patch location of dictionary later
 -: .word ( c)   zpush c@p+ begin c@p+ emit 1 #- while repeat
    drop space zpop c@p+ p + dup 1 #, and + 2 #, + p! ;
 : words  dictionary begin  c@p while
-   drop cr .word key 13 #, = if  drop ; then  drop repeat  drop ;
+   drop c# @ 60 #- invert -if cr then drop .word repeat  drop ;
 -: word  tib #, a! c@p 1 #+
    begin c@p+ c@+ xor if nip ; then drop 1 #- while repeat ;
 -: find  zpush c@p if  drop word if
@@ -75,4 +75,6 @@ here constant dict  \ patch location of dictionary later
     drop  tib #, c@ if  drop apop ; then  drop apop ok query ;
 : abort  ( *) resolve cr init-stacks
 : quit  query interpret ?stack ok quit ;
+\ interpret only, in standalone interpreter
+: ' (  - a)  query apush dictionary find apop ;
 

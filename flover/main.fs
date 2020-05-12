@@ -21,37 +21,18 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 [then]
 
-: dump ( a - a')  p!  base @ hex
+: dump ( a - a')  2* p!  base @ hex
+   p 2/ h. [ char : ] #, emit space
    8 #, begin  @p+ 0 #, <# # # # # #> type space  1 #- 
-   while repeat drop  base !  p ;
+   while repeat drop  base !  p 2/ ;
 
 : ms ( n)  for  4000 ##for next next ;
 
 include SPI.fs
 
-10 constant /SS
-11 constant MOSI
-10 constant MISO
-13 constant CLK
-
-: init-SPI
-   /SS output,  /SS high,
-   MOSI output,  MOSI high,
-   MISO input,  MISO high,
-   CLK output,  CLK high,
-   $52 #, SPCR! ;
-
-\ /SS has to be made an output every time?
-: SPI-enable   /SS output, /SS low, ;
-: SPI-disable  /SS output, /SS high, ;
-
-: SPI! ( n)  SPI-enable  SPDR!
-   begin  SPSR@ $80 #, and until/
-   SPDR@ drop  SPI-disable ;
-
 : test
-   init-SPI  0 #,
-   begin  1 #+  dup SPI!  \ SPDR!
+   init_SPI  0 #,
+   begin  1 #+  dup SPI drop
       100 #, ms  key? 0= while/ repeat
    drop ;
 
