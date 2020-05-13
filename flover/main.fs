@@ -23,8 +23,8 @@ For LGPL information:   http://www.gnu.org/copyleft/lesser.txt
 
 : dump ( a - a')  2* p!  base @ hex
    p 2/ h. [ char : ] #, emit space
-   8 #, begin  @p+ 0 #, <# # # # # #> type space  1 #- 
-   while repeat drop  base !  p 2/ ;
+   8 #, begin  @p+ h.  1 #- while repeat drop
+   base !  p 2/ ;
 
 : ms ( n)  for  4000 ##for next next ;
 
