@@ -1,0 +1,9 @@
+set -x
+avrdude \
+    -v \
+    -carduino \
+    -patmega328p \
+    -P/dev/ttyUSB0 \
+    -b115200 \
+    -D \
+    -Uflash:w:chip.bin

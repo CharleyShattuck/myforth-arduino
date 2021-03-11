@@ -1,0 +1,1 @@
+picocom -b 9600 /dev/ttyUSB0 --omap delbs,crlf
